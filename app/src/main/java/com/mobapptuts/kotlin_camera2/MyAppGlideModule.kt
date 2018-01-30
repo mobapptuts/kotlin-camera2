@@ -1,4 +1,4 @@
-package com.mobapptuts.kotlinfragments
+package com.mobapptuts.kotlin_camera2
 
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.module.AppGlideModule

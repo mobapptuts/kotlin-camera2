@@ -1,4 +1,4 @@
-package com.mobapptuts.kotlinfragments
+package com.mobapptuts.kotlin_camera2
 
 import android.content.res.Configuration
 import android.support.v7.app.AppCompatActivity

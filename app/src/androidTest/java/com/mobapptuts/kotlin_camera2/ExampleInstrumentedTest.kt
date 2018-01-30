@@ -1,4 +1,4 @@
-package com.mobapptuts.kotlinfragments
+package com.mobapptuts.kotlin_camera2
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

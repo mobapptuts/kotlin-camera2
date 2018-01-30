@@ -1,4 +1,4 @@
-package com.mobapptuts.kotlinfragments
+package com.mobapptuts.kotlin_camera2
 
 import org.junit.Test
 

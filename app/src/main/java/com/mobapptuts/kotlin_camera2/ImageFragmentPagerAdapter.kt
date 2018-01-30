@@ -1,4 +1,4 @@
-package com.mobapptuts.kotlinfragments
+package com.mobapptuts.kotlin_camera2
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager

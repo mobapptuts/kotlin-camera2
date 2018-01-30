@@ -9,7 +9,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.mobapptuts.kotlinfragments"
+        applicationId "com.mobapptuts.kotlin_camera2"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1

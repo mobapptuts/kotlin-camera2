@@ -1,4 +1,4 @@
-package com.mobapptuts.kotlinfragments
+package com.mobapptuts.kotlin_camera2
 
 import android.graphics.Bitmap
 import android.net.Uri
@@ -9,23 +9,23 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.bumptech.glide.request.transition.Transition
-import kotlinx.android.synthetic.main.fragment_second_image.*
+import kotlinx.android.synthetic.main.fragment_first_image.*
 
 /**
  * Created by nigelhenshaw on 2018/01/23.
  */
-class SecondImageFragment : Fragment() {
+class FirstImageFragment: Fragment() {
 
-    private val imageUrl = "https://images.pexels.com/photos/163065/mobile-phone-android-apps-phone-163065.jpeg"
+    private val imageUrl = "https://static.pexels.com/photos/596940/pexels-photo-596940.jpeg"
 
     private fun loadImageUsingGlide() {
-        secondFragmentProgressBar.visibility = View.VISIBLE
+        firstFragmentProgressBar.visibility = View.VISIBLE
         GlideApp.with(activity).asBitmap()
                 .load(Uri.parse(imageUrl))
-                .into(object : BitmapImageViewTarget(secondFragmentImageView){
+                .into(object : BitmapImageViewTarget(firstFragmentImageView){
                     override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap>?) {
                         super.onResourceReady(resource, transition)
-                        secondFragmentProgressBar.visibility = View.INVISIBLE
+                        firstFragmentProgressBar.visibility = View.INVISIBLE
                     }
                 })
     }
@@ -36,10 +36,10 @@ class SecondImageFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = SecondImageFragment()
+        fun newInstance() = FirstImageFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_second_image, container, false)
+        return inflater.inflate(R.layout.fragment_first_image, container, false)
     }
 }
