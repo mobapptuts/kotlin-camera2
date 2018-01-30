@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         }
         drawerLayout.addDrawerListener(drawerToogle)
 
-        val pagerAdapter = ImageFragmentPagerAdapter(supportFragmentManager)
+        val pagerAdapter = CamFragmentPagerAdapter(supportFragmentManager)
         viewPager.adapter = pagerAdapter
     }
 
@@ -42,10 +42,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun selectDrawerItem(item: MenuItem) {
-        when (item.itemId) {
-            R.id.firstFragmentItem -> viewPager.currentItem = 0
-            R.id.secondFragmentItem -> viewPager.currentItem = 1
-            else -> viewPager.currentItem = 0
+        var fragment: Fragment? = null
+
+        val fragmentClass = when (item.itemId) {
+            R.id.previewItem -> PreviewFragment::class.java
+            else -> PreviewFragment::class.java
         }
         drawerLayout.closeDrawer(GravityCompat.START)
     }

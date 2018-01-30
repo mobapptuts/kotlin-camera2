@@ -7,12 +7,11 @@ import android.support.v4.app.FragmentPagerAdapter
 /**
  * Created by nigelhenshaw on 2018/01/24.
  */
-class ImageFragmentPagerAdapter(fragmentManager: FragmentManager): FragmentPagerAdapter(fragmentManager) {
+class CamFragmentPagerAdapter(fragmentManager: FragmentManager): FragmentPagerAdapter(fragmentManager) {
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> FirstImageFragment.newInstance()
-            1 -> SecondImageFragment.newInstance()
-            else -> FirstImageFragment.newInstance()
+            0 -> PreviewFragment.newInstance()
+            else -> PreviewFragment.newInstance()
         }
     }
 

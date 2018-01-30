@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">Kotlin Fragments</string>
+    <string name="app_name">Kotlin Camera2</string>
     <string name="first_image">First Image Fragment</string>
     <string name="second_image">Second Image Fragment</string>
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="preview">Camera Preview</string>
 </resources>
