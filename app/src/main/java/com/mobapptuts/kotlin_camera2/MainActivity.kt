@@ -29,8 +29,13 @@ class MainActivity : AppCompatActivity() {
         }
         drawerLayout.addDrawerListener(drawerToogle)
 
-        val pagerAdapter = CamFragmentPagerAdapter(supportFragmentManager)
-        viewPager.adapter = pagerAdapter
+        val fragment = PreviewFragment.newInstance()
+        addFragment(fragment)
+
+        // The ViewPager will be implemented once it's fragments have
+        // been implemented.
+//        val pagerAdapter = CamFragmentPagerAdapter(supportFragmentManager)
+//        viewPager.adapter = pagerAdapter
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -46,10 +51,7 @@ class MainActivity : AppCompatActivity() {
     private fun selectDrawerItem(item: MenuItem) {
         var fragment: Fragment? = null
 
-        val fragmentClass = when (item.itemId) {
-            R.id.previewItem -> PreviewFragment::class.java
-            else -> PreviewFragment::class.java
-        }
+//        val fragmentClass = TODO("Will be implemented later")
         drawerLayout.closeDrawer(GravityCompat.START)
     }
 
@@ -62,9 +64,9 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private fun replaceFragment(fragment: Fragment?) {
+    private fun addFragment(fragment: Fragment?) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.fragmentContainer, fragment)
+        fragmentTransaction.add(R.id.fragmentContainer, fragment)
         fragmentTransaction.commit()
     }
 }

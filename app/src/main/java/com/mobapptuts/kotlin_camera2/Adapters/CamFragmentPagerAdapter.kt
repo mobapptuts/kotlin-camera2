@@ -10,10 +10,7 @@ import com.mobapptuts.kotlin_camera2.Fragments.PreviewFragment
  */
 class CamFragmentPagerAdapter(fragmentManager: FragmentManager): FragmentPagerAdapter(fragmentManager) {
     override fun getItem(position: Int): Fragment {
-        return when (position) {
-            0 -> PreviewFragment.newInstance()
-            else -> PreviewFragment.newInstance()
-        }
+        TODO("Fragments will be added in future")
     }
 
     override fun getCount() = 2
