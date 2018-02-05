@@ -12,10 +12,6 @@ import com.mobapptuts.kotlin_camera2.R
  */
 class PreviewFragment : Fragment() {
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
     companion object {
         fun newInstance() = PreviewFragment()
     }
