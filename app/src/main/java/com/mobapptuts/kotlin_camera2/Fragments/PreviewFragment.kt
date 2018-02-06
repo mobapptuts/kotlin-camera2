@@ -1,5 +1,6 @@
 package com.mobapptuts.kotlin_camera2.Fragments
 
+import android.Manifest
 import android.graphics.SurfaceTexture
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,6 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.mobapptuts.kotlin_camera2.R
 import kotlinx.android.synthetic.main.fragment_preview.*
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.EasyPermissions
 
 /**
  * Created by nigelhenshaw on 2018/01/23.
@@ -17,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_preview.*
 class PreviewFragment : Fragment() {
 
     companion object {
+        const val REQUEST_CAMERA_PERMISSION = 100
         private val TAG = PreviewFragment::class.qualifiedName
         @JvmStatic fun newInstance() = PreviewFragment()
     }
@@ -33,6 +37,24 @@ class PreviewFragment : Fragment() {
             Log.d(TAG, "textureSurface width: $width height: $height")
             openCamera()
         }
+
+     }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions ,grantResults)
+    }
+
+    @AfterPermissionGranted(REQUEST_CAMERA_PERMISSION)
+    private fun checkCameraPermission() {
+        if (EasyPermissions.hasPermissions(activity!!, Manifest.permission.CAMERA)) {
+            Log.d(TAG, "App has camera permission")
+        } else {
+            EasyPermissions.requestPermissions(activity!!,
+                    getString(R.string.camera_request_rationale),
+                    REQUEST_CAMERA_PERMISSION,
+                    Manifest.permission.CAMERA)
+        }
     }
 
     override fun onResume() {
@@ -45,7 +67,7 @@ class PreviewFragment : Fragment() {
     }
 
     private fun openCamera() {
-
+        checkCameraPermission()
     }
 
 

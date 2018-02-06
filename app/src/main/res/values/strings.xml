@@ -5,4 +5,5 @@
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="preview">Camera Preview</string>
+    <string name="camera_request_rationale">Camera app requires camera access</string>
 </resources>
