@@ -8,7 +8,6 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Menu
 import android.view.MenuItem
-import com.mobapptuts.kotlin_camera2.Adapters.CamFragmentPagerAdapter
 import com.mobapptuts.kotlin_camera2.Fragments.PreviewFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -22,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
+        supportActionBar?.title = ""
         navigationView.setNavigationItemSelectedListener {
             selectDrawerItem(it)
             true
@@ -61,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.fragment_menu, menu)
-        return true
+        return false
     }
 
     private fun addFragment(fragment: Fragment?) {

@@ -6,6 +6,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
     tools:context="com.mobapptuts.kotlin_camera2.MainActivity">
 
     <android.support.v4.view.ViewPager
@@ -25,16 +26,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"></FrameLayout>
+            app:layout_constraintTop_toTopOf="parent">
+        </FrameLayout>
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:fitsSystemWindows="false"
+            android:background="@android:color/transparent"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
-            app:layout_constraintBottom_toTopOf="@+id/fragmentContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -43,7 +45,9 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigationView"
+        android:fitsSystemWindows="false"
         android:layout_gravity="start"
+        android:background="@android:color/transparent"
         app:menu="@menu/fragment_menu"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
