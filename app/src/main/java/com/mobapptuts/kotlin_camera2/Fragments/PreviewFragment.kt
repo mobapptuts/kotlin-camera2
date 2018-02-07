@@ -89,6 +89,13 @@ class PreviewFragment : Fragment() {
     private fun connectCamera() {
         val deviceId = cameraId(CameraCharacteristics.LENS_FACING_BACK)
         Log.d(TAG, "deviceId: $deviceId")
+        try {
+            cameraManager.openCamera(deviceId, deviceStateCallback, backgroundHandler)
+        } catch (e: CameraAccessException) {
+            Log.e(TAG, e.toString())
+        } catch (e: InterruptedException) {
+            Log.e(TAG, "Open camera device interrupted while opened")
+        }
     }
 
     companion object {
