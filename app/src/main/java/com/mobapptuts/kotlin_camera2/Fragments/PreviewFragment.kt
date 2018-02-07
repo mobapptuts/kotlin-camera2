@@ -9,14 +9,12 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.support.v4.app.Fragment
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.TextureView
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.mobapptuts.kotlin_camera2.R
 import kotlinx.android.synthetic.main.fragment_preview.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
+import java.util.*
 
 /**
  * Created by nigelhenshaw on 2018/01/23.
@@ -52,6 +50,31 @@ class PreviewFragment : Fragment() {
 
     private val cameraManager by lazy {
         activity?.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+    }
+
+    private fun previewSession() {
+        val surfaceTexture = previewTextureView.surfaceTexture
+        surfaceTexture.setDefaultBufferSize(MAX_PREVIEW_WIDTH, MAX_PREVIEW_HEIGHT)
+        val surface = Surface(surfaceTexture)
+
+        captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
+        captureRequestBuilder.addTarget(surface)
+
+        cameraDevice.createCaptureSession(Arrays.asList(surface),
+                object: CameraCaptureSession.StateCallback(){
+                    override fun onConfigureFailed(session: CameraCaptureSession?) {
+                        Log.e(TAG, "creating capture session failded!")
+                    }
+
+                    override fun onConfigured(session: CameraCaptureSession?) {
+                        if (session != null) {
+                            captureSession = session
+                            captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
+                            captureSession.setRepeatingRequest(captureRequestBuilder.build(), null, null)
+                        }
+                    }
+
+                }, null)
     }
 
     private fun startBackgroundThread() {
