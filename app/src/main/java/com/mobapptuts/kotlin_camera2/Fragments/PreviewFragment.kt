@@ -3,10 +3,7 @@ package com.mobapptuts.kotlin_camera2.Fragments
 import android.Manifest
 import android.content.Context
 import android.graphics.SurfaceTexture
-import android.hardware.camera2.CameraAccessException
-import android.hardware.camera2.CameraCharacteristics
-import android.hardware.camera2.CameraDevice
-import android.hardware.camera2.CameraManager
+import android.hardware.camera2.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
@@ -25,6 +22,11 @@ import pub.devrel.easypermissions.EasyPermissions
  * Created by nigelhenshaw on 2018/01/23.
  */
 class PreviewFragment : Fragment() {
+
+    private val MAX_PREVIEW_WIDTH = 1280
+    private val MAX_PREVIEW_HEIGHT = 720
+    private lateinit var captureSession: CameraCaptureSession
+    private lateinit var captureRequestBuilder: CaptureRequest.Builder
 
     private lateinit var cameraDevice: CameraDevice
     private val deviceStateCallback = object: CameraDevice.StateCallback() {
