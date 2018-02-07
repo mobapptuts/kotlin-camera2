@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
 import android.os.Bundle
 import android.os.Handler
@@ -25,8 +26,25 @@ import pub.devrel.easypermissions.EasyPermissions
  */
 class PreviewFragment : Fragment() {
 
+    private lateinit var cameraDevice: CameraDevice
+    private val deviceStateCallback = object: CameraDevice.StateCallback() {
+        override fun onOpened(camera: CameraDevice?) {
+            Log.d(TAG, "camera device opened")
+            if (camera != null)
+                cameraDevice = camera
+        }
 
+        override fun onDisconnected(camera: CameraDevice?) {
+            Log.d(TAG, "camera device disconnected")
+            camera?.close()
+        }
 
+        override fun onError(camera: CameraDevice?, error: Int) {
+            Log.d(TAG, "camera device error")
+            this@PreviewFragment.activity?.finish()
+        }
+
+    }
     private lateinit var backgroundThread: HandlerThread
     private lateinit var backgroundHandler: Handler
 
