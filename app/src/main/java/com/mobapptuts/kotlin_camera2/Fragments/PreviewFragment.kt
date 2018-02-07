@@ -30,8 +30,11 @@ class PreviewFragment : Fragment() {
     private val deviceStateCallback = object: CameraDevice.StateCallback() {
         override fun onOpened(camera: CameraDevice?) {
             Log.d(TAG, "camera device opened")
-            if (camera != null)
+            if (camera != null){
                 cameraDevice = camera
+                previewSession()
+            }
+
         }
 
         override fun onDisconnected(camera: CameraDevice?) {
@@ -75,6 +78,13 @@ class PreviewFragment : Fragment() {
                     }
 
                 }, null)
+    }
+
+    private fun closeCamera() {
+        if (this::captureSession.isInitialized)
+            captureSession.close()
+        if (this::cameraDevice.isInitialized)
+            cameraDevice.close()
     }
 
     private fun startBackgroundThread() {
@@ -174,6 +184,7 @@ class PreviewFragment : Fragment() {
 
     override fun onPause() {
 
+        closeCamera()
         stopBackgroundThread()
         super.onPause()
     }
