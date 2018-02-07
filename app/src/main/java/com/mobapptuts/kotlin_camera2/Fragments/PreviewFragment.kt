@@ -7,6 +7,8 @@ import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.HandlerThread
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,8 +25,27 @@ import pub.devrel.easypermissions.EasyPermissions
  */
 class PreviewFragment : Fragment() {
 
+
+
+    private lateinit var backgroundThread: HandlerThread
+    private lateinit var backgroundHandler: Handler
+
     private val cameraManager by lazy {
         activity?.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+    }
+
+    private fun startBackgroundThread() {
+        backgroundThread = HandlerThread("Camara2 Kotlin").also { it.start() }
+        backgroundHandler = Handler(backgroundThread.looper)
+    }
+
+    private fun stopBackgroundThread() {
+        backgroundThread.quitSafely()
+        try {
+            backgroundThread.join()
+        } catch (e: InterruptedException) {
+            Log.e(TAG, e.toString())
+        }
     }
 
     private fun <T> cameraCharacteristics(cameraId: String, key: CameraCharacteristics.Key<T>) :T {
@@ -94,10 +115,17 @@ class PreviewFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
+        startBackgroundThread()
         if (previewTextureView.isAvailable)
             openCamera()
         else
             previewTextureView.surfaceTextureListener = surfaceListener
+    }
+
+    override fun onPause() {
+
+        stopBackgroundThread()
+        super.onPause()
     }
 
     private fun openCamera() {
