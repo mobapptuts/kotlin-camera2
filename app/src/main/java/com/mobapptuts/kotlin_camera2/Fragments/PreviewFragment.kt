@@ -7,6 +7,7 @@ import android.hardware.camera2.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
+import android.os.SystemClock
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.*
@@ -25,6 +26,7 @@ class PreviewFragment : Fragment() {
     private val MAX_PREVIEW_HEIGHT = 720
     private lateinit var captureSession: CameraCaptureSession
     private lateinit var captureRequestBuilder: CaptureRequest.Builder
+    private var isCaptured = false
 
     private lateinit var cameraDevice: CameraDevice
     private val deviceStateCallback = object: CameraDevice.StateCallback() {
@@ -170,6 +172,36 @@ class PreviewFragment : Fragment() {
                     REQUEST_CAMERA_PERMISSION,
                     Manifest.permission.CAMERA)
         }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        captureButton.setOnClickListener {
+            Log.d(TAG, "capture button selected")
+            if (isCaptured) {
+                isCaptured = false
+                stopChronometer()
+            } else {
+                isCaptured = true
+                startChronometer()
+            }
+        }
+
+        thumbnailButton.setOnClickListener {
+            Log.d(TAG, "thumbnail button selected")
+        }
+    }
+
+    private fun startChronometer() {
+        chronometer.base = SystemClock.elapsedRealtime()
+        chronometer.setTextColor(resources.getColor(android.R.color.holo_red_light, null))
+        chronometer.start()
+    }
+
+    private fun stopChronometer() {
+        chronometer.setTextColor(resources.getColor(android.R.color.white, null))
+        chronometer.stop()
     }
 
     override fun onResume() {
