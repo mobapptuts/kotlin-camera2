@@ -20,6 +20,7 @@ import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.reflect.jvm.internal.impl.renderer.DescriptorRenderer
 
 /**
@@ -31,7 +32,7 @@ class PreviewFragment : Fragment() {
     private val MAX_PREVIEW_HEIGHT = 720
     private lateinit var captureSession: CameraCaptureSession
     private lateinit var captureRequestBuilder: CaptureRequest.Builder
-    private var isCaptured = false
+    private var isRecording = false
     private val mediaRecorder by lazy {
         MediaRecorder()
     }
@@ -88,7 +89,43 @@ class PreviewFragment : Fragment() {
                         }
                     }
 
-                }, null)
+                }, backgroundHandler)
+    }
+
+    private fun recordSession() {
+
+        setupMediaRecorder()
+
+        val surfaceTexture = previewTextureView.surfaceTexture
+        surfaceTexture.setDefaultBufferSize(MAX_PREVIEW_WIDTH, MAX_PREVIEW_HEIGHT)
+        val textureSurface = Surface(surfaceTexture)
+        val recordSurface = mediaRecorder.surface
+
+        captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD)
+        captureRequestBuilder.addTarget(textureSurface)
+        captureRequestBuilder.addTarget(recordSurface)
+        val surfaces = ArrayList<Surface>().apply {
+            add(textureSurface)
+            add(recordSurface)
+        }
+
+        cameraDevice.createCaptureSession(surfaces,
+                object: CameraCaptureSession.StateCallback(){
+                    override fun onConfigureFailed(session: CameraCaptureSession?) {
+                        Log.e(TAG, "creating record session failed!")
+                    }
+
+                    override fun onConfigured(session: CameraCaptureSession?) {
+                        if (session != null) {
+                            captureSession = session
+                            captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
+                            captureSession.setRepeatingRequest(captureRequestBuilder.build(), null, null)
+                            isRecording = true
+                            mediaRecorder.start()
+                        }
+                    }
+
+                }, backgroundHandler)
     }
 
     private fun closeCamera() {
@@ -249,18 +286,29 @@ class PreviewFragment : Fragment() {
 
         captureButton.setOnClickListener {
             Log.d(TAG, "capture button selected")
-            if (isCaptured) {
-                isCaptured = false
-                stopChronometer()
+            if (isRecording) {
+                isRecording = false
+                stopRecordSession()
             } else {
-                isCaptured = true
-                startChronometer()
+                isRecording = true
+                startRecordSession()
             }
         }
 
         thumbnailButton.setOnClickListener {
             Log.d(TAG, "thumbnail button selected")
         }
+    }
+
+    private fun startRecordSession() {
+        startChronometer()
+        recordSession()
+    }
+
+    private fun stopRecordSession() {
+        stopChronometer()
+        stopMediaRecorder()
+        previewSession()
     }
 
     private fun startChronometer() {
