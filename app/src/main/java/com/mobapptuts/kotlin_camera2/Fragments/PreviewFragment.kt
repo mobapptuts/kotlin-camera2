@@ -123,11 +123,26 @@ class PreviewFragment : Fragment() {
         return videoFile
     }
 
+    private fun setupMediaRecorder() {
+        val rotation = activity?.windowManager?.defaultDisplay?.rotation
+        val sensorOrientation = cameraCharacteristics(
+                cameraId(CameraCharacteristics.LENS_FACING_BACK),
+                CameraCharacteristics.SENSOR_ORIENTATION
+        )
+        when (sensorOrientation) {
+            SENSOR_DEFAULT_ORINTATION_DEGREES ->
+                    mediaRecorder.setOrientationHint(DEFAULT_ORIENTATION.get(rotation!!))
+            SENSOR_INVERSE_ORINTATION_DEGREES ->
+                    mediaRecorder.setOrientationHint(INVERSE_ORIENTATION.get(rotation!!))
+        }
+    }
+
     private fun <T> cameraCharacteristics(cameraId: String, key: CameraCharacteristics.Key<T>) :T {
         val characteristics = cameraManager.getCameraCharacteristics(cameraId)
         return when (key) {
             CameraCharacteristics.LENS_FACING -> characteristics.get(key)
             CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP -> characteristics.get(key)
+            CameraCharacteristics.SENSOR_ORIENTATION -> characteristics.get(key)
             else -> throw  IllegalArgumentException("Key not recognized")
         }
     }
