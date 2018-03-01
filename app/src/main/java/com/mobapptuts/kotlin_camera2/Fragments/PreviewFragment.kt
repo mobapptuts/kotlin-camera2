@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.*
+import android.media.MediaRecorder
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
@@ -15,6 +16,8 @@ import com.mobapptuts.kotlin_camera2.R
 import kotlinx.android.synthetic.main.fragment_preview.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
+import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -27,6 +30,10 @@ class PreviewFragment : Fragment() {
     private lateinit var captureSession: CameraCaptureSession
     private lateinit var captureRequestBuilder: CaptureRequest.Builder
     private var isCaptured = false
+    private val mediaRecorder by lazy {
+        MediaRecorder()
+    }
+    private lateinit var currentVideoFilePath: String
 
     private lateinit var cameraDevice: CameraDevice
     private val deviceStateCallback = object: CameraDevice.StateCallback() {
@@ -101,6 +108,17 @@ class PreviewFragment : Fragment() {
         } catch (e: InterruptedException) {
             Log.e(TAG, e.toString())
         }
+    }
+
+    private fun createVideoFileName(): String {
+        val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        return "VIDEO_${timestamp}.mp4"
+    }
+
+    private fun createVideoFile(): File {
+        val videoFile = File(context?.filesDir, createVideoFileName())
+        currentVideoFilePath = videoFile.absolutePath
+        return videoFile
     }
 
     private fun <T> cameraCharacteristics(cameraId: String, key: CameraCharacteristics.Key<T>) :T {
