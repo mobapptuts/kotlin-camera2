@@ -11,6 +11,7 @@ import android.os.HandlerThread
 import android.os.SystemClock
 import android.support.v4.app.Fragment
 import android.util.Log
+import android.util.SparseIntArray
 import android.view.*
 import com.mobapptuts.kotlin_camera2.R
 import kotlinx.android.synthetic.main.fragment_preview.*
@@ -19,6 +20,7 @@ import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.reflect.jvm.internal.impl.renderer.DescriptorRenderer
 
 /**
  * Created by nigelhenshaw on 2018/01/23.
@@ -157,6 +159,20 @@ class PreviewFragment : Fragment() {
         const val REQUEST_CAMERA_PERMISSION = 100
         private val TAG = PreviewFragment::class.qualifiedName
         @JvmStatic fun newInstance() = PreviewFragment()
+        private val SENSOR_DEFAULT_ORINTATION_DEGREES = 90
+        private val SENSOR_INVERSE_ORINTATION_DEGREES = 270
+        private val DEFAULT_ORIENTATION = SparseIntArray().apply {
+            append(Surface.ROTATION_0, 90)
+            append(Surface.ROTATION_90, 0)
+            append(Surface.ROTATION_180, 270)
+            append(Surface.ROTATION_270, 180)
+        }
+        private val INVERSE_ORIENTATION = SparseIntArray().apply {
+            append(Surface.ROTATION_0, 270)
+            append(Surface.ROTATION_90, 180)
+            append(Surface.ROTATION_180, 90)
+            append(Surface.ROTATION_270, 0)
+        }
     }
 
     private val surfaceListener = object: TextureView.SurfaceTextureListener {
