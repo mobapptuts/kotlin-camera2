@@ -135,6 +135,16 @@ class PreviewFragment : Fragment() {
             SENSOR_INVERSE_ORINTATION_DEGREES ->
                     mediaRecorder.setOrientationHint(INVERSE_ORIENTATION.get(rotation!!))
         }
+        mediaRecorder.apply {
+            setVideoSource(MediaRecorder.VideoSource.SURFACE)
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            setOutputFile(createVideoFile())
+            setVideoEncodingBitRate(10000000)
+            setVideoFrameRate(30)
+            setVideoSize(1920, 1080)
+            setVideoEncoder(MediaRecorder.VideoEncoder.H264)
+            prepare()
+        }
     }
 
     private fun <T> cameraCharacteristics(cameraId: String, key: CameraCharacteristics.Key<T>) :T {
