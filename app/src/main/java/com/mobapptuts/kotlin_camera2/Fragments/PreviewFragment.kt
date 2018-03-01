@@ -151,7 +151,7 @@ class PreviewFragment : Fragment() {
         mediaRecorder.apply {
             try {
                 stop()
-                release()
+                reset()
             } catch (e: IllegalStateException) {
                 Log.e(TAG, e.toString())
             }
