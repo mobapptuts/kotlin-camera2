@@ -147,6 +147,17 @@ class PreviewFragment : Fragment() {
         }
     }
 
+    private fun stopMediaRecorder() {
+        mediaRecorder.apply {
+            try {
+                stop()
+                release()
+            } catch (e: IllegalStateException) {
+                Log.e(TAG, e.toString())
+            }
+        }
+    }
+
     private fun <T> cameraCharacteristics(cameraId: String, key: CameraCharacteristics.Key<T>) :T {
         val characteristics = cameraManager.getCameraCharacteristics(cameraId)
         return when (key) {
