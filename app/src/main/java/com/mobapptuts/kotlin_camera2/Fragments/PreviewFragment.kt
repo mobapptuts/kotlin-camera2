@@ -5,11 +5,15 @@ import android.content.Context
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.*
 import android.media.MediaRecorder
+import android.media.ThumbnailUtils
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.SystemClock
+import android.provider.MediaStore
 import android.support.v4.app.Fragment
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import android.util.Log
 import android.util.SparseIntArray
 import android.view.*
@@ -309,6 +313,7 @@ class PreviewFragment : Fragment() {
         stopChronometer()
         stopMediaRecorder()
         previewSession()
+        thumbnailButton.setImageDrawable(createRoundThumb())
     }
 
     private fun startChronometer() {
@@ -320,6 +325,14 @@ class PreviewFragment : Fragment() {
     private fun stopChronometer() {
         chronometer.setTextColor(resources.getColor(android.R.color.white, null))
         chronometer.stop()
+    }
+
+    private fun createVideoThumb() = ThumbnailUtils.createVideoThumbnail(currentVideoFilePath, MediaStore.Video.Thumbnails.MICRO_KIND)
+
+    private fun createRoundThumb() : RoundedBitmapDrawable {
+        val drawable = RoundedBitmapDrawableFactory.create(resources, createVideoThumb())
+        drawable.isCircular = true
+        return drawable
     }
 
     override fun onResume() {
