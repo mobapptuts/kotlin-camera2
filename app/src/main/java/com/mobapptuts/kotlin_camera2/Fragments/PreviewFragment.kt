@@ -307,7 +307,16 @@ class PreviewFragment : Fragment() {
 
         thumbnailButton.setOnClickListener {
             Log.d(TAG, "thumbnail button selected")
+            val exoPlayerFragment = ExoPlayerFragment.newInstance()
+            replaceFragment(exoPlayerFragment)
         }
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
+        fragmentTransaction?.replace(R.id.fragmentContainer, fragment)
+        fragmentTransaction?.addToBackStack(null)
+        fragmentTransaction?.commit()
     }
 
     private fun startRecordSession() {
