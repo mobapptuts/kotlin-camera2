@@ -1,11 +1,13 @@
 package com.mobapptuts.kotlin_camera2.Fragments
 
 import android.Manifest
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.*
 import android.media.MediaRecorder
 import android.media.ThumbnailUtils
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
@@ -17,6 +19,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import android.util.Log
 import android.util.SparseIntArray
 import android.view.*
+import com.mobapptuts.kotlin_camera2.CameraViewModel
 import com.mobapptuts.kotlin_camera2.R
 import kotlinx.android.synthetic.main.fragment_preview.*
 import pub.devrel.easypermissions.AfterPermissionGranted
@@ -39,6 +42,9 @@ class PreviewFragment : Fragment() {
     private var isRecording = false
     private val mediaRecorder by lazy {
         MediaRecorder()
+    }
+    private val cameraViewModel by lazy {
+        ViewModelProviders.of(activity!!).get(CameraViewModel::class.java)
     }
     private lateinit var currentVideoFilePath: String
 
@@ -314,6 +320,7 @@ class PreviewFragment : Fragment() {
         stopMediaRecorder()
         previewSession()
         thumbnailButton.setImageDrawable(createRoundThumb())
+        cameraViewModel.videoUri = Uri.fromFile(File(currentVideoFilePath))
     }
 
     private fun startChronometer() {
