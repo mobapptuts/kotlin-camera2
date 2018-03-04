@@ -57,11 +57,13 @@ class ExoPlayerFragment : Fragment(){
         exoplayerView.player = simpleExoPlayer
         simpleExoPlayer.prepare(videoMediaSource)
         simpleExoPlayer.playWhenReady = true
+        cameraViewModel.isVideoPlaying = true
     }
 
     private fun stopExoPlayer() {
         simpleExoPlayer.stop()
         simpleExoPlayer.release()
+        cameraViewModel.isVideoPlaying = false
     }
 
     override fun onStart() {
