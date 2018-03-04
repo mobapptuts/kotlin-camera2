@@ -82,6 +82,7 @@ class ExoPlayerFragment : Fragment(), VideoListener{
 
     override fun onStop() {
         stopExoPlayer()
+        simpleExoPlayer.removeVideoListener(this)
         super.onStop()
     }
 
