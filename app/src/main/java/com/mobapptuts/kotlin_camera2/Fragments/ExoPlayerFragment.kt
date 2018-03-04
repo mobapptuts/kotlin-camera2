@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
+import android.util.Rational
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
+import com.google.android.exoplayer2.video.VideoListener
 import com.mobapptuts.kotlin_camera2.CameraViewModel
 import com.mobapptuts.kotlin_camera2.R
 import kotlinx.android.synthetic.main.fragment_exoplayer.*
@@ -21,7 +23,13 @@ import kotlinx.android.synthetic.main.fragment_exoplayer.*
 /**
  * Created by nigelhenshaw on 2018/03/02.
  */
-class ExoPlayerFragment : Fragment(){
+class ExoPlayerFragment : Fragment(), VideoListener{
+    override fun onVideoSizeChanged(width: Int, height: Int, unappliedRotationDegrees: Int, pixelWidthHeightRatio: Float) {
+        cameraViewModel.aspectRatio = Rational(width, height)
+    }
+
+    override fun onRenderedFirstFrame() {
+    }
 
     private val bandwidthMeter by lazy {
         DefaultBandwidthMeter()
@@ -69,6 +77,7 @@ class ExoPlayerFragment : Fragment(){
     override fun onStart() {
         super.onStart()
         startExoPlayer()
+        simpleExoPlayer.addVideoListener(this)
     }
 
     override fun onStop() {
