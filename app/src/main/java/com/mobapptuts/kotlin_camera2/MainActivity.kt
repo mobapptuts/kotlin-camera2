@@ -1,5 +1,7 @@
 package com.mobapptuts.kotlin_camera2
 
+import android.app.PictureInPictureParams
+import android.arch.lifecycle.ViewModelProviders
 import android.content.res.Configuration
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +17,21 @@ class MainActivity : AppCompatActivity() {
 
     val drawerToogle by lazy {
         ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close)
+    }
+
+    val cameraViewModel by lazy {
+        ViewModelProviders.of(this).get(CameraViewModel::class.java)
+    }
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        if (cameraViewModel.isVideoPlaying) {
+            val params = PictureInPictureParams.Builder().apply {
+                setAspectRatio(cameraViewModel.aspectRatio)
+            }
+            enterPictureInPictureMode(params.build())
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
