@@ -16,6 +16,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import com.mobapptuts.kotlin_camera2.CameraViewModel
 import com.mobapptuts.kotlin_camera2.R
+import kotlinx.android.synthetic.main.fragment_exoplayer.*
 
 /**
  * Created by nigelhenshaw on 2018/03/02.
@@ -49,6 +50,28 @@ class ExoPlayerFragment : Fragment(){
     private val videoMediaSource by lazy {
         ExtractorMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(cameraViewModel.videoUri)
+    }
+
+    private fun startExoPlayer() {
+        exoplayerView.controllerAutoShow = false
+        exoplayerView.player = simpleExoPlayer
+        simpleExoPlayer.prepare(videoMediaSource)
+        simpleExoPlayer.playWhenReady = true
+    }
+
+    private fun stopExoPlayer() {
+        simpleExoPlayer.stop()
+        simpleExoPlayer.release()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        startExoPlayer()
+    }
+
+    override fun onStop() {
+        stopExoPlayer()
+        super.onStop()
     }
 
     private val cameraViewModel by lazy {
