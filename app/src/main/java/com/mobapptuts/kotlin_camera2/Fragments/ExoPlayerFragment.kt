@@ -8,9 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.util.Util
 import com.mobapptuts.kotlin_camera2.CameraViewModel
 import com.mobapptuts.kotlin_camera2.R
 
@@ -33,6 +36,19 @@ class ExoPlayerFragment : Fragment(){
 
     private val simpleExoPlayer by lazy {
         ExoPlayerFactory.newSimpleInstance(context, trackSelection)
+    }
+
+    private val applicationName by lazy {
+        context?.applicationInfo?.loadLabel(context?.packageManager).toString()
+    }
+
+    private val dataSourceFactory by lazy {
+        DefaultDataSourceFactory(context, Util.getUserAgent(context, applicationName))
+    }
+
+    private val videoMediaSource by lazy {
+        ExtractorMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(cameraViewModel.videoUri)
     }
 
     private val cameraViewModel by lazy {
