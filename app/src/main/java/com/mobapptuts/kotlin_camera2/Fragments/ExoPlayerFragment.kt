@@ -7,6 +7,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.mobapptuts.kotlin_camera2.CameraViewModel
 import com.mobapptuts.kotlin_camera2.R
 
@@ -14,6 +18,22 @@ import com.mobapptuts.kotlin_camera2.R
  * Created by nigelhenshaw on 2018/03/02.
  */
 class ExoPlayerFragment : Fragment(){
+
+    private val bandwidthMeter by lazy {
+        DefaultBandwidthMeter()
+    }
+
+    private val trackSelectionFactory by lazy {
+        AdaptiveTrackSelection.Factory(bandwidthMeter)
+    }
+
+    private val trackSelection by lazy {
+        DefaultTrackSelector(trackSelectionFactory)
+    }
+
+    private val simpleExoPlayer by lazy {
+        ExoPlayerFactory.newSimpleInstance(context, trackSelection)
+    }
 
     private val cameraViewModel by lazy {
         ViewModelProviders.of(activity!!).get(CameraViewModel::class.java)
